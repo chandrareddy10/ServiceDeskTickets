@@ -103,11 +103,11 @@ public class TicketService {
         if(ticket.getPriority() != null) {
             currentTicket.setPriority(ticket.getPriority());
         }
-        if(ticket.getCategory() != null) {
-            currentTicket.setCategory(ticket.getCategory());
+        if(ticket.getStatus() != null) {
+            currentTicket.setStatus(ticket.getStatus());
         }
-        if(ticket.getCategory() != null) {
-            currentTicket.setCategory(ticket.getCategory());
+        if(ticket.getSummary() != null) {
+            currentTicket.setSummary(ticket.getSummary());
         }
     }
 }
