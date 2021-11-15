@@ -56,6 +56,8 @@ public class ServiceTicketClient {
 		return ticketResponse.getBody();
 	}
 
+
+
 	public Ticket getTicketById(Integer incident) {
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(baseURL+"/"+incident);
 
@@ -88,9 +90,8 @@ public class ServiceTicketClient {
 		return ticketResponseEntity.getBody();
 	}
 
-	/*public Ticket updateTicket(String incident){
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(baseURL+"ticket")
-				.path(incident);
+	public Ticket updateTicket(Ticket ticket){
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(baseURL+"/update");
 		      HttpEntity<Ticket> request = new HttpEntity<Ticket>(ticket, null);
 
 		ResponseEntity<Ticket> ticketResponseEntity = restTemplate.exchange(builder.toUriString(),
@@ -99,15 +100,4 @@ public class ServiceTicketClient {
 
 		return ticketResponseEntity.getBody();
 	}
-
-	public List<Ticket> getServiceTicketBy(TicketFilter ticketFilter) {
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(baseURL+"servicedesk/by");
-
-		ResponseEntity<List<Ticket>> ticketResponse = restTemplate.exchange(builder.toUriString(),
-				HttpMethod.GET, null , new ParameterizedTypeReference<List<Ticket>>() {
-				});
-
-		return ticketResponse.getBody();
-	}
-*/
 }

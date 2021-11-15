@@ -19,9 +19,16 @@ public class TicketService {
     private TicketRepository ticketRepository;
 
     public Ticket createTicket(Ticket ticket) {
+        ticket.setIncident(getIncident());
         ticket  = ticketRepository.insert(ticket);
 
         return ticket;
+    }
+
+    private Integer getIncident() {
+        Integer max = 80001;
+        Integer min = 99999;
+        return (int)Math.random()*(max-min+1)+min;
     }
 
     public List<Ticket> getAllTickets(){
@@ -86,8 +93,8 @@ public class TicketService {
         return ticketRepository.save(ticket);
     }
 
-    public Ticket updateTicket(Integer incident, Ticket ticket) {
-        final List<Ticket> byIncident = ticketRepository.findByIncident(incident);
+    public Ticket updateTicket(Ticket ticket) {
+        final List<Ticket> byIncident = ticketRepository.findByIncident(ticket.getIncident());
         if(CollectionUtils.isEmpty(byIncident)) {
             return ticket;
         }
@@ -108,6 +115,21 @@ public class TicketService {
         }
         if(ticket.getSummary() != null) {
             currentTicket.setSummary(ticket.getSummary());
+        }
+        if(ticket.getDealerId() != null) {
+            currentTicket.setDealerId(ticket.getDealerId());
+        }
+        if(ticket.getDealerName() != null) {
+            currentTicket.setDealerName(ticket.getDealerName());
+        }
+        if(ticket.getOpenDate() != null) {
+            currentTicket.setOpenDate(ticket.getOpenDate());
+        }
+        if(ticket.getLastModificationDate() != null) {
+            currentTicket.setLastModificationDate(ticket.getLastModificationDate());
+        }
+        if(ticket.getUserId() != null) {
+            currentTicket.setUserId(ticket.getUserId());
         }
     }
 }

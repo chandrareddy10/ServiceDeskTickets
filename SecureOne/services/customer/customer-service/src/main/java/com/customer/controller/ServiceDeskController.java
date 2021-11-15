@@ -54,26 +54,9 @@ public class ServiceDeskController {
         return ticketService.addAttachment(incident, attachment);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value="/update/{incident}")
-    @ResponseBody
-    public Ticket addAttachment(@PathVariable(value ="incident") Integer incident, @RequestBody Ticket ticket) {
-        return ticketService.updateTicket(incident, ticket);
-    }
-
-
- /*
-    @RequestMapping(method = RequestMethod.PUT)
+    @RequestMapping(method = RequestMethod.PUT, value="/update")
     @ResponseBody
     public Ticket updateTicket(@RequestBody Ticket ticket) {
         return ticketService.updateTicket(ticket);
-    }*/
-
-
-
-   /*  @RequestMapping(method = RequestMethod.PUT, value="/addTicketLog/{incident}")
-    @ResponseBody
-    public Ticket addAttachment(@PathParam(value ="incident") String incident, @RequestBody Attachment attachment) {
-        return null;
-    }*/
-
+    }
 }

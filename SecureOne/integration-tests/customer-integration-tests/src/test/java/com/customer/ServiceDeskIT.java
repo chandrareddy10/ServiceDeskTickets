@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 
 public class ServiceDeskIT {
 
@@ -43,8 +44,8 @@ public class ServiceDeskIT {
 	@Test
 	public void getServiceTicket_byIncidentId() {
 		Ticket ticketEntity = createTicketEntity(INCIDENT, CATEGORY, SUMMARY, PRIORITY, nowDate, STATUS, RTE_ONE_DLR_ID, DEALER_NAME, USER_ID, ASSIGNED_TO);
-		serviceTicketClient.createTicket(ticketEntity);
-		Ticket actual = serviceTicketClient.getTicketById(ticketEntity.getIncident());
+		final Ticket savedTicket = serviceTicketClient.createTicket(ticketEntity);
+		Ticket actual = serviceTicketClient.getTicketById(savedTicket.getIncident());
 
 		MatcherAssert.assertThat(actual.getDealerId(), is(RTE_ONE_DLR_ID));
 		MatcherAssert.assertThat(actual.getCategory(), is(CATEGORY));
@@ -58,10 +59,28 @@ public class ServiceDeskIT {
 	}
 
 	@Test
+	public void updateServiceTicket_byIncident() {
+		Ticket ticketEntity = createTicketEntity(INCIDENT, CATEGORY, SUMMARY, PRIORITY, nowDate, STATUS, RTE_ONE_DLR_ID, DEALER_NAME, USER_ID, ASSIGNED_TO);
+		final Ticket savedTicket = serviceTicketClient.createTicket(ticketEntity);
+
+		Ticket getTicket = serviceTicketClient.getTicketById(savedTicket.getIncident());
+
+		getTicket.setPriority("Level3");
+		getTicket.setCategory("EContractingTest");
+		getTicket.setSummary("Econtracting Summary");
+
+		final Ticket actual = serviceTicketClient.updateTicket(getTicket);
+
+		MatcherAssert.assertThat(actual.getPriority(),  is("Level3"));
+		MatcherAssert.assertThat(actual.getCategory(),  is("EContractingTest"));
+		MatcherAssert.assertThat(actual.getSummary(),  is("Econtracting Summary"));
+	}
+
+	@Test
 	public void getAllTickets_findAll() {
 		List<Ticket> actual = serviceTicketClient.getAllTickets();
 
-		MatcherAssert.assertThat(actual.size(), is(6));
+		MatcherAssert.assertThat(actual.size(), not(0));
 	}
 
 	@Test
@@ -82,8 +101,9 @@ public class ServiceDeskIT {
 	public void getServiceTicket_withTicketLog() {
 		Ticket ticket = createTicketEntity(98412, "eContracting", "JVM error","3",nowDate,"Esclated","HH3HK", "CCRegression", "QAUSER", "Level3");
 		ticket.setTicketLogList(new ArrayList<>());
-		serviceTicketClient.createTicket(ticket);
-		final Ticket actual = serviceTicketClient.addTicketLog(98412, createTicketLog());
+		Ticket savedTicket = serviceTicketClient.createTicket(ticket);
+
+		final Ticket actual = serviceTicketClient.addTicketLog(savedTicket.getIncident(), createTicketLog());
 
 		MatcherAssert.assertThat(actual.getTicketLogList().size(), is(1));
 	}
@@ -92,10 +112,10 @@ public class ServiceDeskIT {
 	public void getServiceTicket_withAttachment() {
 		Ticket ticket = createTicketEntity(98445, "eContracting", "JVM error","3",nowDate,"Esclated","HH3HK", "CCRegression", "QAUSER", "Level3");
 		ticket.setAttachments(new ArrayList<>());
-		serviceTicketClient.createTicket(ticket);
-		final Ticket actual = serviceTicketClient.addAttachment(98445, createAttachment());
+		Ticket savedTicket = serviceTicketClient.createTicket(ticket);
+		Ticket actual = serviceTicketClient.addAttachment(savedTicket.getIncident(), createAttachment());
 
-		MatcherAssert.assertThat(actual.getTicketLogList().size(), is(1));
+		MatcherAssert.assertThat(actual.getAttachments().size(), is(1));
 	}
 
 	private Ticket createTicketEntity(int incident, String category, String summary, String priority, Date nowDate, String status, String rteOneDlrId, String dealerName, String userId, String assignedTo) {

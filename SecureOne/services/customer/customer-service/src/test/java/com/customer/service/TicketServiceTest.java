@@ -62,7 +62,7 @@ public class TicketServiceTest {
         assertThat(actual.getUserId(), is(USER_ID));
         assertThat(actual.getDealerName(), is(DEALER_NAME));
         assertThat(actual.getAssignedTo(), is(ASSIGNED_TO));
-        assertThat(actual.getIncident(), is(INCIDENT));
+        assertThat(actual.getIncident(), is(ticket.getIncident()));
         assertThat(actual.getPriority(), is(PRIORITY));
         assertThat(actual.getStatus(), is(STATUS));
         assertThat(actual.getSummary(), is(SUMMARY));
@@ -84,7 +84,7 @@ public class TicketServiceTest {
         Ticket serviceTicketBy = subject.getServiceTicketBy(ticket.getIncident());
         assertThat(serviceTicketBy.getTicketLogList().size(), is(0));
 
-        Ticket actual = subject.addTicketLog(5463, createTicketLog());
+        Ticket actual = subject.addTicketLog(ticket.getIncident(), createTicketLog());
 
         assertThat(actual.getTicketLogList().size(), is(1));
         assertThat(actual.getTicketLogList().get(0).getLogType(), is(LOG_TYPE));
@@ -94,27 +94,16 @@ public class TicketServiceTest {
     @Test
     public void updateTicket_returnsTicket() {
         subject.createTicket(ticket);
-        Ticket actual = subject.getServiceTicketBy(ticket.getIncident());
+        Ticket serviceTicketBy = subject.getServiceTicketBy(ticket.getIncident());
+        serviceTicketBy.setCategory("EContracting Service");
+        serviceTicketBy.setSummary("EContracting -JVM Error");
+        serviceTicketBy.setPriority("Priority3");
 
-        assertThat(actual.getDealerId(), is(RTE_ONE_DLR_ID));
-        assertThat(actual.getCategory(), is(CATEGORY));
-        assertThat(actual.getUserId(), is(USER_ID));
+        final Ticket actual = subject.updateTicket(serviceTicketBy);
 
-
-        assertThat(actual.getDealerName(), is(DEALER_NAME));
-        assertThat(actual.getAssignedTo(), is(ASSIGNED_TO));
-        assertThat(actual.getIncident(), is(INCIDENT));
-        assertThat(actual.getPriority(), is(PRIORITY));
-        assertThat(actual.getStatus(), is(STATUS));
-        assertThat(actual.getSummary(), is(SUMMARY));
-        //assertThat(actual.getOpenDate(), is(nowDate));
-        // assertThat(actual.getTicketLogList().get(0).getCreatedOn(), is(nowDate));
-        assertThat(actual.getTicketLogList().get(0).getCreatedBy(), is(USER_ID));
-        assertThat(actual.getTicketLogList().get(0).getDescription(), is(LOG_DESCRIPTION));
-        assertThat(actual.getTicketLogList().get(0).getLogType(), is(LOG_TYPE));
-        assertThat(actual.getAttachments().get(0).getAttachedBy(), is(USER_ID));
-        assertThat(actual.getAttachments().get(0).getDescription(), is(DOC_DESCRIPTION));
-        assertThat(actual.getAttachments().get(0).getDocName(), is(DOC_NAME));
+        assertThat(actual.getCategory(), is("EContracting Service"));
+        assertThat(actual.getSummary(), is("EContracting -JVM Error"));
+        assertThat(actual.getPriority(), is("Priority3"));
     }
 
     @Test
