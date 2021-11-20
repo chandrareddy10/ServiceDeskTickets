@@ -1,7 +1,6 @@
 package com.customer.api;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Ticket {
@@ -9,13 +8,21 @@ public class Ticket {
     private String summary;
     private String dealerId;
     private String dealerName;
+    private String userName;
     private String userId;
     private String category;
     private String priority;
     private String status;
-    private String assignedTo;
-    private Date openDate;
-    private Date lastModificationDate;
+    private String openDate;
+    private String lastModificationDate;
+    private String description;
+    private String reportingMethod;
+    private String groupName;
+    private String dealId;
+    private String contractConversationId;
+    private String oldCreditAppCvrsId;
+    private String newCreditAppCvrsId;
+
     private List<TicketLog> ticketLogList = new ArrayList<>();
     private List<Attachment> attachments  = new ArrayList<>();
 
@@ -43,13 +50,6 @@ public class Ticket {
         this.dealerId = dealerId;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     public String getCategory() {
         return category;
@@ -67,45 +67,12 @@ public class Ticket {
         this.status = status;
     }
 
-    public String getAssignedTo() {
-        return assignedTo;
-    }
-
-    public void setAssignedTo(String assignedTo) {
-        this.assignedTo = assignedTo;
-    }
-
-
-    public String getDealerName() {
-        return dealerName;
-    }
-
-    public void setDealerName(String dealerName) {
-        this.dealerName = dealerName;
-    }
-
     public String getPriority() {
         return priority;
     }
 
     public void setPriority(String priority) {
         this.priority = priority;
-    }
-
-    public Date getOpenDate() {
-        return openDate;
-    }
-
-    public void setOpenDate(Date openDate) {
-        this.openDate = openDate;
-    }
-
-    public Date getLastModificationDate() {
-        return lastModificationDate;
-    }
-
-    public void setLastModificationDate(Date lastModificationDate) {
-        this.lastModificationDate = lastModificationDate;
     }
 
     public List<TicketLog> getTicketLogList() {
@@ -122,5 +89,103 @@ public class Ticket {
 
     public void setAttachments(List<Attachment> attachments) {
         this.attachments = attachments;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getReportingMethod() {
+        return reportingMethod;
+    }
+
+    public void setReportingMethod(String reportingMethod) {
+        this.reportingMethod = reportingMethod;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public String getLastModificationDate() {
+        return lastModificationDate;
+    }
+
+    public void setLastModificationDate(String lastModificationDate) {
+        this.lastModificationDate = lastModificationDate;
+    }
+
+    public String getOpenDate() {
+        return openDate;
+    }
+
+    public void setOpenDate(String openDate) {
+        this.openDate = openDate;
+    }
+
+    public String getDealId() {
+        return dealId;
+    }
+
+    public void setDealId(String dealId) {
+        this.dealId = dealId;
+    }
+
+    public String getContractConversationId() {
+        return contractConversationId;
+    }
+
+    public void setContractConversationId(String contractConversationId) {
+        this.contractConversationId = contractConversationId;
+    }
+
+    public String getOldCreditAppCvrsId() {
+        return oldCreditAppCvrsId;
+    }
+
+    public void setOldCreditAppCvrsId(String oldCreditAppCvrsId) {
+        this.oldCreditAppCvrsId = oldCreditAppCvrsId;
+    }
+
+    public String getNewCreditAppCvrsId() {
+        return newCreditAppCvrsId;
+    }
+
+    public void setNewCreditAppCvrsId(String newCreditAppCvrsId) {
+        this.newCreditAppCvrsId = newCreditAppCvrsId;
+    }
+
+    public String getDealerName() {
+        return dealerName;
+    }
+
+    public void setDealerName(String dealerName) {
+        this.dealerName = dealerName;
     }
 }

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<table style="font-style:italic;font-family: Arial,helvetica,sans-serif;line-height: 22.5px;text-align: left;font-size: 15px;">
+
+    <tr style="font-weight: bold;">
+        <u>Incident <span th:text="${incidentId}"></span> </u> Transfer Notification
+    </tr>
+    <tr height = 20px></tr>
+    <tr style="font-weight: bold;">
+        <b>Transfer group from Dealer to R1 CAS SUPPORT LEVEL1<b>
+    </tr>
+    <tr height = 20px></tr>
+    <tr th:background="blue" style="font-weight: bold;"> Summary</tr>
+    <tr>
+        <span th:text="${summary}"></span>
+    </tr>
+    <tr style="font-weight: bold;" th:background="blue" >
+        <td>End User</td><td>Incident Area</td><td>Status</td><td>Priority</td>
+    </tr>
+    <tr style="font-weight: bold;" th:background="blue" >
+        <td><span th:text="${reportedBy}"></span></td><td><span th:text="${category}"></span></td><td><span th:text="${status}"></span></td><td><span th:text="${priority}"></span></td>
+    </tr>
+    <tr th:background="blue"> Description</tr>
+    <tr>
+        <span th:text="${description}"></span>
+    </tr>
+
+    <tr height = 20px></tr>
+    <tr>Reason for closing the ticket: </tr>
+    <tr>
+        The dealer <span th:text="${dealerName}"></span> No Longer seeing an issue, so dealer requested to close the ticket
+    </tr>
+
+
+ <tr height = 20px></tr>
+    <tr>
+        Thanks
+    </tr>
+
+</table>
+</body>
+</html>

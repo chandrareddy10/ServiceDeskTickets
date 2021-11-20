@@ -4,7 +4,8 @@ import java.util.Date;
 
 public class TicketFilter {
     private String searchByDealerId;
-    private String searchByUserId;
+    private String searchByFirstName;
+    private String searchByLastName;
     private Date searchByStartDate;
     private Date searchByEndDate;
     private String searchByCategory;
@@ -12,6 +13,7 @@ public class TicketFilter {
     private String searchBySummary;
     private String searchByPriority;
     private String searchByStatus;
+    private String searchByDescription;
 
     public String getSearchByDealerId() {
         return searchByDealerId;
@@ -19,14 +21,6 @@ public class TicketFilter {
 
     public void setSearchByDealerId(String searchByDealerId) {
         this.searchByDealerId = searchByDealerId;
-    }
-
-    public String getSearchByUserId() {
-        return searchByUserId;
-    }
-
-    public void setSearchByUserId(String searchByUserId) {
-        this.searchByUserId = searchByUserId;
     }
 
     public Date getSearchByStartDate() {
@@ -86,4 +80,27 @@ public class TicketFilter {
     }
 
 
+    public String getSearchByDescription() {
+        return searchByDescription;
+    }
+
+    public void setSearchByDescription(String searchByDescription) {
+        this.searchByDescription = searchByDescription;
+    }
+
+    public String getSearchByFirstName() {
+        return searchByFirstName;
+    }
+
+    public void setSearchByFirstName(String searchByFirstName) {
+        this.searchByFirstName = searchByFirstName;
+    }
+
+    public String getSearchByLastName() {
+        return searchByLastName;
+    }
+
+    public void setSearchByLastName(String searchByLastName) {
+        this.searchByLastName = searchByLastName;
+    }
 }

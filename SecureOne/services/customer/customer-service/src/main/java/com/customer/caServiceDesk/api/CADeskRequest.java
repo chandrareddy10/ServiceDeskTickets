@@ -2,22 +2,14 @@ package com.customer.caServiceDesk.api;
 
 public class CADeskRequest {
 
-    private String faceId1;
-    private String faceId2;
+    private String rest_access = "";
 
-    public String getFaceId2() {
-        return faceId2;
+
+    public String getRest_access() {
+        return rest_access;
     }
 
-    public void setFaceId2(String faceId2) {
-        this.faceId2 = faceId2;
-    }
-
-    public String getFaceId1() {
-        return faceId1;
-    }
-
-    public void setFaceId1(String faceId1) {
-        this.faceId1 = faceId1;
+    public void setRest_access(String rest_access) {
+        this.rest_access = rest_access;
     }
 }

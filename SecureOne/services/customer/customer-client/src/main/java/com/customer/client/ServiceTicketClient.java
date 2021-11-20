@@ -24,12 +24,12 @@ public class ServiceTicketClient {
 		this.restTemplate.setUriTemplateHandler(new DefaultUriBuilderFactory(this.baseURL));
 	}
 
-	public Ticket createTicket(Ticket ticket){
+	public Integer createTicket(Ticket ticket){
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(baseURL+"/");
 		HttpEntity<Ticket> request = new HttpEntity<Ticket>(ticket, null);
 
-		ResponseEntity<Ticket> ticketResponseEntity = restTemplate.exchange(builder.toUriString(),
-				HttpMethod.POST, request, new ParameterizedTypeReference<Ticket>() {
+		ResponseEntity<Integer> ticketResponseEntity = restTemplate.exchange(builder.toUriString(),
+				HttpMethod.POST, request, new ParameterizedTypeReference<Integer>() {
 				});
 
 		return ticketResponseEntity.getBody();

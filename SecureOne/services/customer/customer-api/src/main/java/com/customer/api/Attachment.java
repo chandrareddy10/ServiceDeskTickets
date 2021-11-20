@@ -1,13 +1,12 @@
 package com.customer.api;
 
 import java.sql.Blob;
-import java.util.Date;
 
 public class Attachment {
 
     private String docName;
     private String description;
-    private Date attachedTimeStamp;
+    private String attachedTimeStamp;
     private String attachedBy;
     private Blob document;
 
@@ -27,11 +26,11 @@ public class Attachment {
         this.description = description;
     }
 
-    public Date getAttachedTimeStamp() {
+    public String getAttachedTimeStamp() {
         return attachedTimeStamp;
     }
 
-    public void setAttachedTimeStamp(Date attachedTimeStamp) {
+    public void setAttachedTimeStamp(String attachedTimeStamp) {
         this.attachedTimeStamp = attachedTimeStamp;
     }
 

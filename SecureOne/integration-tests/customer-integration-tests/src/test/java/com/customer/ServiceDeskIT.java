@@ -5,16 +5,16 @@ import com.customer.api.Ticket;
 import com.customer.api.TicketFilter;
 import com.customer.api.TicketLog;
 import com.customer.client.ServiceTicketClient;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.*;
 
 public class ServiceDeskIT {
 
@@ -22,7 +22,7 @@ public class ServiceDeskIT {
 	private static final String CATEGORY = "Credit and Compliance Page";
 	private static final String SUMMARY = "Compliance - JVM error";
 	private static final String PRIORITY = "2-Moderate";
-	private Date nowDate = null;
+	private String nowDate = null;
 	private static final String STATUS = "InProgress";
 	private static final String RTE_ONE_DLR_ID = "YO4WL";
 	private static final String DEALER_NAME = "Bondo Test Dlrship";
@@ -43,27 +43,33 @@ public class ServiceDeskIT {
 
 	@Test
 	public void getServiceTicket_byIncidentId() {
-		Ticket ticketEntity = createTicketEntity(INCIDENT, CATEGORY, SUMMARY, PRIORITY, nowDate, STATUS, RTE_ONE_DLR_ID, DEALER_NAME, USER_ID, ASSIGNED_TO);
-		final Ticket savedTicket = serviceTicketClient.createTicket(ticketEntity);
-		Ticket actual = serviceTicketClient.getTicketById(savedTicket.getIncident());
+		Ticket ticketEntity = createTicketApi();
+		String json = null;
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			json = mapper.writeValueAsString(ticketEntity);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		String requestEnntity = json;
+		Integer savedTicket = serviceTicketClient.createTicket(ticketEntity);
+		Ticket actual = serviceTicketClient.getTicketById(savedTicket);
 
-		MatcherAssert.assertThat(actual.getDealerId(), is(RTE_ONE_DLR_ID));
-		MatcherAssert.assertThat(actual.getCategory(), is(CATEGORY));
-		MatcherAssert.assertThat(actual.getUserId(), is(USER_ID));
-		MatcherAssert.assertThat(actual.getDealerName(), is(DEALER_NAME));
-		MatcherAssert.assertThat(actual.getAssignedTo(), is(ASSIGNED_TO));
-		MatcherAssert.assertThat(actual.getIncident(), is(INCIDENT));
-		MatcherAssert.assertThat(actual.getPriority(), is(PRIORITY));
-		MatcherAssert.assertThat(actual.getStatus(), is(STATUS));
-		MatcherAssert.assertThat(actual.getSummary(), is(SUMMARY));
+		MatcherAssert.assertThat(actual, is(notNullValue()));
+	}
+
+	@Test
+	public void getTickets_byIncidentId() {
+		final Ticket actual = serviceTicketClient.getTicketById(519136);
+		MatcherAssert.assertThat(actual,  is(notNullValue()));
 	}
 
 	@Test
 	public void updateServiceTicket_byIncident() {
 		Ticket ticketEntity = createTicketEntity(INCIDENT, CATEGORY, SUMMARY, PRIORITY, nowDate, STATUS, RTE_ONE_DLR_ID, DEALER_NAME, USER_ID, ASSIGNED_TO);
-		final Ticket savedTicket = serviceTicketClient.createTicket(ticketEntity);
+		final Integer incident = serviceTicketClient.createTicket(ticketEntity);
 
-		Ticket getTicket = serviceTicketClient.getTicketById(savedTicket.getIncident());
+		Ticket getTicket = serviceTicketClient.getTicketById(incident);
 
 		getTicket.setPriority("Level3");
 		getTicket.setCategory("EContractingTest");
@@ -101,9 +107,9 @@ public class ServiceDeskIT {
 	public void getServiceTicket_withTicketLog() {
 		Ticket ticket = createTicketEntity(98412, "eContracting", "JVM error","3",nowDate,"Esclated","HH3HK", "CCRegression", "QAUSER", "Level3");
 		ticket.setTicketLogList(new ArrayList<>());
-		Ticket savedTicket = serviceTicketClient.createTicket(ticket);
+		Integer ticketId = serviceTicketClient.createTicket(ticket);
 
-		final Ticket actual = serviceTicketClient.addTicketLog(savedTicket.getIncident(), createTicketLog());
+		final Ticket actual = serviceTicketClient.addTicketLog(ticketId, createTicketLog());
 
 		MatcherAssert.assertThat(actual.getTicketLogList().size(), is(1));
 	}
@@ -112,13 +118,13 @@ public class ServiceDeskIT {
 	public void getServiceTicket_withAttachment() {
 		Ticket ticket = createTicketEntity(98445, "eContracting", "JVM error","3",nowDate,"Esclated","HH3HK", "CCRegression", "QAUSER", "Level3");
 		ticket.setAttachments(new ArrayList<>());
-		Ticket savedTicket = serviceTicketClient.createTicket(ticket);
-		Ticket actual = serviceTicketClient.addAttachment(savedTicket.getIncident(), createAttachment());
+		Integer incident = serviceTicketClient.createTicket(ticket);
+		Ticket actual = serviceTicketClient.addAttachment(incident, createAttachment());
 
 		MatcherAssert.assertThat(actual.getAttachments().size(), is(1));
 	}
 
-	private Ticket createTicketEntity(int incident, String category, String summary, String priority, Date nowDate, String status, String rteOneDlrId, String dealerName, String userId, String assignedTo) {
+	private Ticket createTicketEntity(int incident, String category, String summary, String priority, String nowDate, String status, String rteOneDlrId, String dealerName, String userId, String assignedTo) {
 		Ticket ticket = new Ticket();
 		ticket.setIncident(incident);
 		ticket.setCategory(category);
@@ -127,12 +133,10 @@ public class ServiceDeskIT {
 		ticket.setOpenDate(nowDate);
 		ticket.setStatus(status);
 		ticket.setDealerId(rteOneDlrId);
-		ticket.setDealerName(dealerName);
 		ticket.setUserId(userId);
-		ticket.setAssignedTo(assignedTo);
 		ticket.setTicketLogList(addTickets());
 		ticket.setAttachments(addAttachment());
-		ticket.setLastModificationDate(new Date());
+		ticket.setLastModificationDate(nowDate);
 		return ticket;
 	}
 
@@ -143,6 +147,19 @@ public class ServiceDeskIT {
 		ticketLog.setLogType(LOG_TYPE);
 		ticketLog.setDescription(LOG_DESCRIPTION);
 		return ticketLog;
+	}
+
+	private Ticket createTicketApi() {
+		Ticket ticket = new Ticket();
+		ticket.setPriority("3");
+		ticket.setDescription("ticket description");
+		ticket.setDealId("2342343");
+		ticket.setContractConversationId("213123131");
+		ticket.setOldCreditAppCvrsId("23424442233");
+		ticket.setNewCreditAppCvrsId("53255223424");
+		ticket.setDealerId("YO4WL");
+		ticket.setSummary("Ticket Summary");
+		return ticket;
 	}
 
 	private List addTickets() {
@@ -162,7 +179,7 @@ public class ServiceDeskIT {
 		attachment.setDocName(DOC_NAME);
 		attachment.setDescription(DOC_DESCRIPTION);
 		attachment.setAttachedBy(USER_ID);
-		attachment.setAttachedTimeStamp(nowDate);
+		//attachment.setAttachedTimeStamp(new Date());
 		return attachment;
 	}
 }

@@ -1,13 +1,12 @@
 package com.customer.api;
 
-import java.util.Date;
-
 public class TicketLog {
 
     private String logType;
     private String createdBy;
     private String description;
-    private Date createdOn;
+    private String createdOn;
+    private String statusRequested;
 
     public String getLogType() {
         return logType;
@@ -33,13 +32,20 @@ public class TicketLog {
         this.description = description;
     }
 
-    public Date getCreatedOn() {
+    public String getCreatedOn() {
         return createdOn;
     }
 
-    public void setCreatedOn(Date createdOn) {
+    public void setCreatedOn(String createdOn) {
         this.createdOn = createdOn;
     }
 
 
+    public String getStatusRequested() {
+        return statusRequested;
+    }
+
+    public void setStatusRequested(String statusRequested) {
+        this.statusRequested = statusRequested;
+    }
 }

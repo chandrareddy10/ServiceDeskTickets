@@ -4,6 +4,7 @@ import com.customer.api.Attachment;
 import com.customer.api.Ticket;
 import com.customer.api.TicketFilter;
 import com.customer.api.TicketLog;
+import com.customer.service.EmailService;
 import com.customer.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -18,6 +19,9 @@ public class ServiceDeskController {
     @Autowired
     private TicketService ticketService;
 
+    @Autowired
+    private EmailService emailService;
+
     @RequestMapping(method = RequestMethod.POST, value= "/search")
     @ResponseBody
     public List<Ticket> getServiceTicketsById(@RequestBody TicketFilter ticketFilter) {
@@ -27,25 +31,28 @@ public class ServiceDeskController {
     @RequestMapping(method = RequestMethod.GET, value= "/{incident}")
     @ResponseBody
     public  Ticket getTicketByIncident(@PathVariable(value ="incident") Integer incident) {
-        return ticketService.getServiceTicketBy(incident);
+        return ticketService.getServiceTicketByIncident(incident);
     }
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public Ticket createTicket(@RequestBody Ticket ticket) {
-        return ticketService.createTicket(ticket);
+    public Integer createTicket(@RequestBody Ticket ticket) {
+        return ticketService.createTicketApi(ticket);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value= "/findAll")
+    @RequestMapping(method = RequestMethod.GET, value= "/findAll/{dealerId}")
     @ResponseBody
-    public List<Ticket> getAllTickets() {
-        return ticketService.getAllTickets();
+    public List<Ticket> getAllTickets(@PathVariable(value="dealerId") String dealerId) {
+        return ticketService.getAllTickets(dealerId);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value="/addTicketLog/{incident}")
     @ResponseBody
     public Ticket addTicketLog(@PathVariable(value ="incident") Integer incident, @RequestBody TicketLog ticketLog) {
-        return ticketService.addTicketLog(incident, ticketLog);
+        final Integer integer = ticketService.addTicketLogApi(incident, ticketLog);
+        final Ticket serviceTicketByIncident = ticketService.getServiceTicketByIncident(incident);
+        emailService.sendSupportEmail(serviceTicketByIncident);
+        return serviceTicketByIncident;
     }
 
     @RequestMapping(method = RequestMethod.PUT, value="/addAttachment/{incident}")

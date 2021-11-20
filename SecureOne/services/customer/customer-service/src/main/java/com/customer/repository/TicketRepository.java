@@ -15,7 +15,9 @@ public interface TicketRepository extends MongoRepository<Ticket, String> {
     public List<Ticket> findAllBy();
     public List<Ticket> findByStatus(String status);
     public List<Ticket> findBySummary(String summary);
+    public List<Ticket> findByDescription(String searchByDescription);
+    /*public List<Ticket> findByFirstName(String searchByFirstName);
+    public List<Ticket> findByLastName(String searchByLastName);*/
 
     public void removeAllBy();
-
 }

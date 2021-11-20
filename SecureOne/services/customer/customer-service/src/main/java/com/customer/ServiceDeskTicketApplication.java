@@ -8,5 +8,7 @@ public class ServiceDeskTicketApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ServiceDeskTicketApplication.class, args);
+
+
 	}
 }
