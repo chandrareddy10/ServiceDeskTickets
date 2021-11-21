@@ -24,7 +24,7 @@ public class EmailService {
 
     private static String subjectTemplate = "R1 CAS Support Level1 - Incident: {0} - Priority:4 ";
 
-    public void sendSupportEmail(Ticket ticket) {
+    public void sendSupportEmail(Ticket ticket, String comment) {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = null;
 
@@ -33,9 +33,9 @@ public class EmailService {
                     MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                     StandardCharsets.UTF_8.name());
 
-            helper.setText(emailTemplateBuilder.build(ticket), true);
+            helper.setText(emailTemplateBuilder.build(ticket, comment), true);
             helper.setSubject(MessageFormat.format(subjectTemplate, ticket.getIncident().toString()));
-            helper.setTo("carnest.codeathon@gmail.com");
+            helper.setTo("creddy@routeone.com");
         } catch (MessagingException e) {
 
 

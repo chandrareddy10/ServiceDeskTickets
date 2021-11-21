@@ -17,7 +17,9 @@ public class EmailServiceTest {
     @Test
     public void sendSimpleMessage() {
         final Ticket ticket = createTicket();
-        emailService.sendSupportEmail(ticket);
+
+        emailService.sendSupportEmail(ticket, "Able to successful login in to the system");
+        //assertThat(ticket, is(notNullValue()));
     }
 
     private Ticket createTicket() {
@@ -25,8 +27,10 @@ public class EmailServiceTest {
         ticket.setIncident(123123);
         ticket.setDealerId("YO4Wl");
         ticket.setSummary("Not getting any questioners. ");
-        ticket.setUserName("Chandra");
+        ticket.setUserName("Chandra Reddy");
+        ticket.setUserId("Chandra Reddy");
         ticket.setCategory("Compliance");
+        ticket.setStatus("Acknowledged");
         ticket.setPriority("4");
         ticket.setDescription("What is occurring that should not be? Caller is trying to pull a quiz because the customer failed IDV but she does not get any questioners. \n" +
                 "\n" +
