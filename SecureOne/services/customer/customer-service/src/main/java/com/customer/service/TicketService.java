@@ -71,12 +71,11 @@ public class TicketService {
         createIncident.setSummary(ticket.getSummary());
 
         CACategoryRequest caCategoryRequest = new CACategoryRequest();
-        String categoryValue = categoryMap.get(ticket.getCategory());
-        caCategoryRequest.setRelativeAttribute(StringUtils.isEmpty(categoryValue)?"pcat:400162":oldCreditAppCvrsId);
+        caCategoryRequest.setRelativeAttribute(ticket.getCategory()==null?"pcat:400162":ticket.getCategory());
         createIncident.setCaCategory(caCategoryRequest);
 
         CAPriorityRequest caPriorityRequest = new CAPriorityRequest();
-        caPriorityRequest.setRelativeAttribute(ticket.getPriority());
+        caPriorityRequest.setRelativeAttribute("2");
         createIncident.setCaPriority(caPriorityRequest);
 
         CAStatusRequest caStatusRequest = new CAStatusRequest();
@@ -96,7 +95,7 @@ public class TicketService {
         createIncident.setCaRequested(caRequested);
 
         CustomerRequest customerRequest = new CustomerRequest();
-        customerRequest.setRelativeAttribute("078C799B7E096F4AB0E4A5515F44DD2E");
+         customerRequest.setRelativeAttribute(ticket.getUserId());
         createIncident.setCustomer(customerRequest);
 
         return createIncident;
@@ -312,9 +311,9 @@ public class TicketService {
         CreateLogRequest createLogRequest = new CreateLogRequest();
         CreateLog createLog = new CreateLog();
         createLog.setId(incident.toString());
-        createLog.setDescription(ticketLog.getDescription());
         CreateLogStatus createLogStatus  = new CreateLogStatus();
         createLogStatus.setRelativeAttribute(ticketLog.getStatusRequested());
+        createLogStatus.setDescription(ticketLog.getDescription());
         createLog.setCreateLogStatus(createLogStatus);
         createLogRequest.setCreateLog(createLog);
 

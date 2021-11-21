@@ -66,4 +66,6 @@ public class ServiceDeskController {
     public Ticket updateTicket(@RequestBody Ticket ticket) {
         return ticketService.updateTicket(ticket);
     }
+
+    //Remove Attachment
 }

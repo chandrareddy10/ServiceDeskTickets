@@ -7,6 +7,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class CreateLogStatus {
     @JsonProperty("@REL_ATTR")
     private String relativeAttribute;
+    @JsonProperty("description")
+    private String description;
+
 
     public String getRelativeAttribute() {
         return relativeAttribute;
@@ -14,5 +17,13 @@ public class CreateLogStatus {
 
     public void setRelativeAttribute(String relativeAttribute) {
         this.relativeAttribute = relativeAttribute;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
