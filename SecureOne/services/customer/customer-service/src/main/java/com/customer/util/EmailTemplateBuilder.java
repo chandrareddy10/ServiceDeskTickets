@@ -16,7 +16,7 @@ public class EmailTemplateBuilder {
     @Autowired
     private TemplateEngine templateEngine;
 
-    public  String build(Ticket ticket) {
+    public  String build(Ticket ticket, String comment) {
         String ticketLog = "";
         Context context = new Context();
         context.setVariable("incidentId", ticket.getIncident());
@@ -25,9 +25,10 @@ public class EmailTemplateBuilder {
         context.setVariable("description", ticket.getDescription());
         context.setVariable("summary", ticket.getSummary());
         context.setVariable("status", ticket.getStatus());
-        context.setVariable("reportedBy", ticket.getUserId());
         context.setVariable("priority", ticket.getPriority());
         context.setVariable("category", ticket.getCategory());
+        context.setVariable("comment", comment);
+        context.setVariable("reportedBy", ticket.getUserName());
 
         final List<TicketLog> ticketLogList = ticket.getTicketLogList();
         if(!CollectionUtils.isEmpty(ticketLogList) ){
